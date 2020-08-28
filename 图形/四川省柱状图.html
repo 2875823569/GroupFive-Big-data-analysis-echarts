@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>地图</title>
+    <style>
+        *{
+            padding:0;
+            margin:0;
+        }
+    </style>
+    <script src="../../../大数据实训 (2)/express/index.js"></script>
+</head>
+<script src="echarts/dist/echarts.min.js"></script>
+<script src="echarts/map/js/china.js"></script>
+<script src="jquery-3.4.1.js"></script>
+<body>
+<div id="main" style="width: 100%;height: 100vh;"></div>
+</body>
+<script>
+    var myChart = echarts.init($("#main")[0])
+    data = []
+    $(function () {
+        $.get('http://localhost:3000/SCZZTselect', function (data_) {
+            // console.log(data_)
+            for (let list of data_) {
+                data.push({"value":list[1],"name":list[0]})
+            }
+            var data_name = [];
+            var data_value = [];
+            for (var m in data) {
+                data_name.push(data[m]['name'])
+                console.log(data[m]['name'])
+                data_value.push(data[m]['value'])
+            }
+            option = {
+                backgroundColor: "rgb(64,74,89)",
+                title: {
+                    text: '“四川省交通情况',
+                    // subtext:'纯属虚构',
+                    left: '50%',
+                    top:'30',
+                    textAlign: 'center',
+                    textStyle: {
+                        color: "#fff",
+                        fontWeight: 'normal',
+                        fontFamily: '宋体'
+                    }
+                },
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: { // 坐标轴指示器，坐标轴触发有效
+                        type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
+                    }
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '10%',
+                    top: '15%',
+                    containLabel: true
+                },
+                xAxis: [{
+                    type: 'category',
+                    data: data_name,
+                    axisTick: {
+                        alignWithLabel: true
+                    },
+                    "axisLabel": {
+                        interval: 0,
+                        rotate: 45,
+                        show: true,
+                        splitNumber: 20,
+                        textStyle: {
+                            fontFamily: "微软雅黑",
+                            fontSize: '14px',
+                            color: "#fff",
+                            fontWeight: 'normal',
+
+                        }
+                    },
+                }],
+                yAxis: [{
+                    type: 'value',
+                    axisLine: {
+                        lineStyle: {
+                            color: "#fff"
+                        }
+                    },
+                }],
+                // itemStyle:{
+                //     normal:{
+                //         color:function(d){return "#"+Math.floor(Math.random()*(256*256*256-1)).toString(16);}
+                //     }
+                // },
+                series: [{
+                    name: '值',
+                    type: 'bar',
+                    barWidth: '60%',
+                    data: data_value,
+                    itemStyle: {
+                        normal: {
+                            color: function(d) {
+                                return "#" + Math.floor(Math.random() * (256 * 256 * 256 - 1)).toString(16);
+                            }
+                        }
+                    },
+                }]
+            };
+            myChart.setOption(option)
+            console.log(data)
+        })
+    })
+
+
+</script>
+</html>

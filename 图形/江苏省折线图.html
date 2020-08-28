@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>地图</title>
+    <style>
+        *{
+            padding:0;
+            margin:0;
+        }
+    </style>
+</head>
+<script src="echarts/dist/echarts.min.js"></script>
+<script src="echarts/map/js/china.js"></script>
+<script src="jquery-3.4.1.js"></script>
+<body>
+<div id="main" style="width: 100%;height: 100vh;"></div>
+</body>
+<script>
+    var myChart = echarts.init($("#main")[0])
+    option = {
+        backgroundColor:"rgb(64,74,89)",
+        title: {
+            text: '江苏省折线图'
+        },
+        tooltip: {
+            trigger: 'axis'
+        },
+        legend: {
+            data:['安庆','蚌埠','亳州','池州','滁州']
+        },
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
+        toolbox: {
+            feature: {
+                saveAsImage: {}
+            }
+        },
+        xAxis: {
+            type: 'category',
+            boundaryGap: false,
+            data: ['周一','周二','周三','周四','周五','周六','周日']
+        },
+        yAxis: {
+            type: 'value'
+        },
+        series: [
+            {
+                name:'安庆',
+                type:'line',
+                stack: '总量',
+                data:[120, 132, 101, 134, 90, 230, 210]
+            },
+            {
+                name:'蚌埠',
+                type:'line',
+                stack: '总量',
+                data:[220, 182, 191, 234, 290, 330, 310]
+            },
+            {
+                name:'亳州',
+                type:'line',
+                stack: '总量',
+                data:[150, 232, 201, 154, 190, 330, 410]
+            },
+            {
+                name:'池州',
+                type:'line',
+                stack: '总量',
+                data:[320, 332, 301, 334, 390, 330, 320]
+            },
+            {
+                name:'滁州',
+                type:'line',
+                stack: '总量',
+                data:[820, 932, 901, 934, 1290, 1330, 1320]
+            }
+        ]
+    };
+    myChart.setOption(option)
+</script>
+</html>
+
+

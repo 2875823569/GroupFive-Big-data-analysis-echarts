@@ -1,0 +1,175 @@
+.main{
+    padding:0 20px;
+    min-height: 100vh;
+    /*outline: 1px solid;*/
+}
+
+body, dl, dt, dd, ul, ol, li, pre, form, fieldset, input, p, blockquote, th, td {
+    font-weight:400;
+    margin:0;
+    padding:0;
+}
+body{
+    /*cursor:url('../image/鼠标3.png'),auto;*/
+}
+
+ol, ul {
+    list-style-image:none;
+    list-style-position:outside;
+    list-style-type:none;
+}
+h1, h2, h3, h4, h4, h5 {
+    margin:0;
+    padding:0;
+}
+
+.top{
+    width: 100%;
+    height: 55px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    background-color: rgb(255,255,255);
+    box-shadow: 0 0 2px 2px rgba(0,0,0,.1);
+    background-color: rgba(0,12,66,.8);
+}
+
+.display_btn{
+    width: 20px;
+    height: 20px;
+    background-image: url(../image/按钮.png);
+    background-size: cover;
+    margin: 0 20px;
+    cursor:pointer;
+}
+.top h2{
+    font-size: 18px;
+    display: flex;
+    margin-right: 20px;
+    font-weight: 500;
+}
+.top h2 p{
+    color: rgb(139,184,138);
+}
+.top label{
+    display: flex;
+    align-items: center;
+}
+.icon-fangdajing{
+    margin-right: 5px;
+}
+.search_box{
+    display: flex;
+    width: 140px;
+    height: 20px;
+    border: none;
+    border-radius: 10px;
+}
+.search_box span{
+    display: inline-block;
+    width: 10px;
+    height: 100%;
+}
+.search_box:hover{
+    border:1px solid grey;
+}
+.search{
+    width: 110px;
+    background: transparent;
+    border: none;
+    height: 20px;
+    outline: none;
+    color: #FFFFFF;
+}
+.search::placeholder{
+    color: #FFFFFF;
+}
+.center{
+    width: 100%;
+    outline: 1px solid;
+    min-height: 91%;
+    display: flex;
+}
+.left_nav{
+    width: 140px;
+    min-height: 91vh;
+    /*outline: 1px solid red;*/
+    display: inline-block;
+    background-color: rgb(41,53,65);
+    font-size: 10px;
+    overflow: hidden;
+    transition: .5s;
+}
+.display_left_nav{
+    width: 0;
+}
+.left_nav>ul:first-of-type{
+    margin-top:10px;
+}
+
+.left_nav>ul>div{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    min-width: 120px;
+    height: 40px;
+    border-radius: 10px;
+    margin: 0 10px;
+    line-height: 50px;
+    cursor: pointer;
+}
+.left_nav>ul>div:hover{
+    background-color: rgb(53,63,77);
+}
+.left_nav>ul>div p{
+    color: rgb(104,114,124);
+}
+
+.left_nav div i{
+     color:#FFFFFF;
+     font-size: 10px;
+    transition: .3s;
+    transform: rotate(0deg);
+ }
+.left_nav ul{
+    max-height: 40px;
+    overflow: hidden;
+    transition: .5s;
+}
+/*导航栏隐藏事件样式*/
+.display_left_information.display_left_information{
+    max-height: 600px;
+}
+.returnsjx.returnsjx.returnsjx{
+    transform: rotate(0deg);
+}
+.display_left_information i:last-of-type{
+    transform: rotate(90deg);
+}
+.left_nav div i:first-of-type{
+    font-size: 16px;
+}
+/*隐藏li样式*/
+.hidden_li{
+    width: 120px;
+    height: 40px;
+    /* border-radius: 10px; */
+    margin: 0 10px;
+    line-height: 50px;
+    background: rgb(52,64,76);
+    text-align: center;
+    cursor: pointer;
+}
+.hidden_li:hover{
+    background-color: rgba(243, 238, 238, 0.75);
+}
+#middle_iframe{
+    flex-grow: 1;
+    background-image: url(../image/加载.gif);
+    background-repeat: no-repeat;
+    background-position: center;
+}
+/*地图样式*/
+#map{
+    /*width:*/
+}

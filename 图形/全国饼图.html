@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>地图</title>
+    <style>
+        *{
+            padding:0;
+            margin:0;
+        }
+    </style>
+</head>
+<script src="echarts/dist/echarts.min.js"></script>
+<script src="echarts/map/js/china.js"></script>
+<script src="jquery-3.4.1.js"></script>
+<body>
+<div id="main" style="width: 100%;height: 100vh;"></div>
+</body>
+<script>
+    var myChart = echarts.init($("#main")[0])
+    var m2R2Data= [];
+
+//随机生成颜色
+    function randomColor (){
+        var str='#';
+        for(var i=0;i<6;i++){
+            str+=Math.floor(Math.random()*16).toString(16);
+        }
+        return str;
+    }
+    $(function () {
+        $.get('http://localhost:3000/ChinaBTselect', function (data_) {
+            for (let list of data_) {
+                    m2R2Data.push({value:list[1], legendname:list[0],name:`${list[1]} ${list[0]}`,itemStyle:{color:randomColor()}})
+            }
+            console.log(m2R2Data)
+            var option = {
+                backgroundColor:"rgb(64,74,89)",
+                title: [
+                    {
+                        text: '各省交通情况',
+                        textStyle: {
+                            fontSize: 16,
+                            color: "black"
+                        },
+                        left: "50%"
+                    },
+                    {
+
+                        textStyle: {
+                            fontSize: 20,
+                            color: "black"
+                        },
+                        subtextStyle: {
+                            fontSize: 20,
+                            color: 'black'
+                        },
+                        textAlign: "center",
+                        x: '34.5%',
+                        y: '44%',
+                    }],
+                tooltip: {
+                    trigger: 'item',
+                    formatter: function (parms) {
+                        var str = parms.seriesName + "</br>" +
+                            parms.marker + "" + parms.data.legendname + "</br>" +
+                            "数量：" + parms.data.value + "</br>" +
+                            "占比：" + parms.percent + "%";
+                        return str;
+                    }
+                },
+                legend: {
+                    type: "scroll",
+                    orient: 'vertical',
+                    left: '70%',
+                    align: 'left',
+                    top: 'middle',
+                    textStyle: {
+                        color: '#8C8C8C'
+                    },
+                    height: 250
+                },
+                series: [
+                    {
+                        name: '标题2',
+                        type: 'pie',
+                        center: ['35%', '50%'],
+                        radius: ['40%', '65%'],
+                        clockwise: false, //饼图的扇区是否是顺时针排布
+                        avoidLabelOverlap: false,
+                        label: {
+                            normal: {
+                                show: true,
+                                position: 'outter',
+                                formatter: function (parms) {
+                                    return parms.data.legendname
+                                }
+                            }
+                        },
+                        labelLine: {
+                            normal: {
+                                length: 5,
+                                length2: 3,
+                                smooth: true,
+                            }
+                        },
+                        data: m2R2Data
+                    }
+                ]
+            };
+            myChart.setOption(option)
+        })
+        })
+</script>
+</html>
+
+

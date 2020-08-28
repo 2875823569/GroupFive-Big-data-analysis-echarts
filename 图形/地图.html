@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>地图</title>
+    <style>
+        *{
+            padding:0;
+            margin:0;
+        }
+         body{
+             display: flex;
+         }
+        .main{
+            flex: 1;
+            height: 100vh;
+            /*background-color: white;*/
+        }
+        #main1{
+            flex: 1;
+            height: 100vh;
+            /*background-color: white;*/
+        }
+    </style>
+</head>
+<script src="echarts/dist/echarts.min.js"></script>
+<script src="echarts/map/js/china.js"></script>
+<script src="jquery-3.4.1.js"></script>
+
+<body>
+    <div id="main" class="main"></div>
+    <div id="main1" class="main1"></div>
+<!--    中国地图散点图-->
+    <script>
+        var myChart = echarts.init($("#main")[0])
+        var data = [];
+        var dataCopy = []
+        var geoCoordMap = {};
+        var convertData = function (data) {
+            var res = [];
+            for (var i = 0; i < data.length; i++) {
+
+                var geoCoord = geoCoordMap[data[i].name];
+                if (geoCoord) {
+                    res.push({
+                        name: data[i].name,
+                        value: geoCoord.concat(data[i].value)
+                    });
+                }
+            }
+            return res;
+        };
+
+        $(function () {
+            $.get('http://localhost:3000/select', function (data_) {
+                for (let list of data_) {
+                    // for (let list =0;list<data_.length;list++) {
+
+                        // console.log(list)
+                    for (let ele=0;ele<list.length;ele++) {
+                        // console.log(ele)
+                        // var item = {}
+                        // item[`name`] = list[0];
+                        // item["value"] = list[1];
+                        var name = list[0]
+                        data.push({name:`${list[0]}`,value:`${list[1]}`})
+                        geoCoordMap[name] = [list[2],list[3]]
+                        // console.log(geoCoordMap)
+                    }
+                }
+                var option = {
+                    backgroundColor: '#404a59',
+                    title: {
+                        text: '全国智能交能后台数据监控平台',
+                        // subtext: 'data from PM25.in',
+                        // sublink: 'http://www.pm25.in',
+                        left: 'center',
+                        textStyle: {
+                            color: '#fff'
+                        }
+                    },
+                    tooltip: {
+                        trigger: 'item'
+                    },
+                    legend: {
+                        orient: 'vertical',
+                        y: 'bottom',
+                        x: 'right',
+                        data: ['交通'],
+                        textStyle: {
+                            color: '#fff'
+                        }
+                    },
+                    geo: {
+                        map: 'china',
+                        label: {
+                            emphasis: {
+                                show: false
+                            }
+                        },
+                        roam: true,
+                        itemStyle: {
+                            normal: {
+                                areaColor: '#323c48',
+                                borderColor: '#111'
+                            },
+                            emphasis: {
+                                areaColor: '#2a333d'
+                            }
+                        }
+                    },
+                    // progressive: true,
+                    large: true,
+                    // largeThreshold: 2000,
+                    series: [
+                        {
+                            name: '中国交通',
+                            type: 'scatter',
+                            coordinateSystem: 'geo',
+                            data: convertData(data),
+                            symbolSize: function (val) {
+                                return val[3] / 10;
+                            },
+                            label: {
+                                normal: {
+                                    formatter: '{b}',
+                                    position: 'right',
+                                    show: false
+                                },
+                                emphasis: {
+                                    show: true
+                                }
+                            },
+                            itemStyle: {
+                                normal: {
+                                    color: '#ddb926'
+                                }
+                            }
+                        }
+                    ]
+                };
+                myChart.setOption(option);
+
+            });
+        });
+
+
+
+
+
+
+    </script>
+<!--全国饼图-->
+    <script>
+        var myChart1 = echarts.init($("#main1")[0])
+        var m2R2Data= [];
+
+        //随机生成颜色
+        function randomColor (){
+            var str='#';
+            for(var i=0;i<6;i++){
+                str+=Math.floor(Math.random()*16).toString(16);
+            }
+            return str;
+        }
+        $(function () {
+            $.get('http://localhost:3000/ChinaBTselect', function (data_) {
+                for (let list of data_) {
+                    m2R2Data.push({value:list[1], legendname:list[0],name:`${list[1]} ${list[0]}`,itemStyle:{color:randomColor()}})
+                }
+                // console.log(m2R2Data)
+                var option = {
+                    backgroundColor:"rgb(64,74,89)",
+                    title: [
+                        {
+                            text: '各省交通情况',
+                            textStyle: {
+                                fontSize: 16,
+                                color: "black"
+                            },
+                            left: "50%"
+                        },
+                        {
+
+                            textStyle: {
+                                fontSize: 20,
+                                color: "black"
+                            },
+                            subtextStyle: {
+                                fontSize: 20,
+                                color: 'black'
+                            },
+                            textAlign: "center",
+                            x: '34.5%',
+                            y: '44%',
+                        }],
+                    tooltip: {
+                        trigger: 'item',
+                        formatter: function (parms) {
+                            var str = parms.seriesName + "</br>" +
+                                parms.marker + "" + parms.data.legendname + "</br>" +
+                                "数量：" + parms.data.value + "</br>" +
+                                "占比：" + parms.percent + "%";
+                            return str;
+                        }
+                    },
+                    legend: {
+                        type: "scroll",
+                        orient: 'vertical',
+                        left: '80%',
+                        align: 'left',
+                        top: 'middle',
+                        textStyle: {
+                            color: '#8C8C8C'
+                        },
+                        height: 250
+                    },
+                    series: [
+                        {
+                            name: '标题2',
+                            type: 'pie',
+                            center: ['38%', '50%'],
+                            radius: ['40%', '65%'],
+                            clockwise: false, //饼图的扇区是否是顺时针排布
+                            avoidLabelOverlap: false,
+                            label: {
+                                normal: {
+                                    show: true,
+                                    position: 'outter',
+                                    formatter: function (parms) {
+                                        return parms.data.legendname
+                                    }
+                                }
+                            },
+                            labelLine: {
+                                normal: {
+                                    length: 5,
+                                    length2: 3,
+                                    smooth: true,
+                                }
+                            },
+                            data: m2R2Data
+                        }
+                    ]
+                };
+                myChart1.setOption(option)
+            })
+        })
+    </script>
+
+</body>
+</html>
